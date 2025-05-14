@@ -29,19 +29,19 @@ public class UserServiceImpl implements UserService {
     private final SubscriptionRepository subscriptionRepository;
 
     @Override
-    public UserResponseDto createUser(UserRequestDto userRequestDto) {
+    public UserResponseDto createUser(final UserRequestDto userRequestDto) {
         log.info("Запрос на добавление пользователя.");
         try {
             final User user = userRepository.save(UserMapper.toUser(userRequestDto));
             log.info("Пользователь успешно добавлен под id {}", user.getId());
             return UserMapper.toUserResponseDto(user);
         } catch (DataIntegrityViolationException e) {
-            throw new ConflictException("Адрес электронной почты уже занят почты");
+            throw new ConflictException("Адрес электронной почты уже занят");
         }
     }
 
     @Override
-    public UserResponseDto getUser(Long id) {
+    public UserResponseDto getUser(final Long id) {
         log.info("Запрос на получение пользователя с id {}", id);
         final User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Пользователя с id = {} нет." + id));
@@ -50,7 +50,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDto> getAllUsers(List<Long> userIds, Pageable pageable) {
+    public List<UserResponseDto> getAllUsers(final List<Long> userIds,
+                                             final Pageable pageable) {
         log.info("Запрос на получение списка пользователей");
         final List<User> users;
         if (Objects.isNull(userIds) || userIds.isEmpty()) {
@@ -64,7 +65,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto updateUser(Long id, UserRequestDto userRequestDto) {
+    public UserResponseDto updateUser(final Long id,
+                                      final UserRequestDto userRequestDto) {
         log.info("Запрос на обновление данных пользователя с id {}", id);
         final User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Пользователя с id = {} нет." + id));
@@ -80,7 +82,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long id) {
+    public void deleteUser(final Long id) {
         log.info("Запрос на удаление пользователя с id {}", id);
         userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Пользователя с id = {} нет." + id));

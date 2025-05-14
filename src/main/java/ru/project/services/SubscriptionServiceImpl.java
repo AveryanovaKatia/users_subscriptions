@@ -50,7 +50,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public List<UserResponseDto> getUsersBySubscriptionId(Long id) {
+    public List<UserResponseDto> getUsersBySubscriptionId(final Long id) {
         log.info("Запрос на получение всех пользователей, оформивших подписку с id = {}", id);
         final Subscription subscription = subscriptionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Подписки с id = {} нет." + id));

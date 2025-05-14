@@ -1,0 +1,25 @@
+services:
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: users-subscriptions
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: users_subscriptions_app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/users-subscriptions
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 12345
+      SPRING_JPA_HIBERNATE_DDL-AUTO: update
+    ports:
+      - "8080:8080"
