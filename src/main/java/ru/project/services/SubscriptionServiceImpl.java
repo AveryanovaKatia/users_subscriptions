@@ -50,6 +50,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserResponseDto> getUsersBySubscriptionId(final Long id) {
         log.info("Запрос на получение всех пользователей, оформивших подписку с id = {}", id);
         final Subscription subscription = subscriptionRepository.findById(id)

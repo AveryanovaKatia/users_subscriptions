@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponseDto getUser(final Long id) {
         log.info("Запрос на получение пользователя с id {}", id);
         final User user = userRepository.findById(id)
@@ -50,6 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserResponseDto> getAllUsers(final List<Long> userIds,
                                              final Pageable pageable) {
         log.info("Запрос на получение списка пользователей");
